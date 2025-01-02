@@ -120,6 +120,13 @@ function App() {
       const docRef = doc(db, "Transactions", transactionId);
 
       await updateDoc(docRef, transaction);
+
+      // フロント更新
+      const updatedTransactions = transactions.map((t) =>
+        t.id === transactionId ? { ...t, ...transaction } : t
+      ) as Transaction[];
+      console.log(updatedTransactions);
+      setTransactions(updatedTransactions);
     } catch (err) {
       if (isFireStoreError(err)) {
         console.error("firebaseのエラーは:", err);

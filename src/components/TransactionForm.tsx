@@ -152,13 +152,12 @@ const TransactionForm = ({
   }, [currentType]);
 
   // 送信処理
-  // 送信処理
   const onSubmit: SubmitHandler<Schema> = (data) => {
     if (selectedTransaction) {
       // 更新処理
       onUpdateTransaction(data, selectedTransaction.id)
         .then(() => {
-          console.log("更新しました。");
+          // console.log("更新しました。");
           setSelectedTransaction(null);
         })
         .catch((error) => {
@@ -184,6 +183,16 @@ const TransactionForm = ({
       content: "",
     });
   };
+
+  useEffect(() => {
+    //選択肢が更新されたか確認
+    if (selectedTransaction) {
+      const categoryExists = categories.some(
+        (category) => category.label === selectedTransaction.category
+      );
+      setValue("category", categoryExists ? selectedTransaction.category : "");
+    }
+  }, [selectedTransaction, categories]);
 
   useEffect(() => {
     if (selectedTransaction) {
